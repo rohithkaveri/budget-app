@@ -1,0 +1,7 @@
+.BudgetTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-weight: normal;
+    margin-bottom: 3;
+}
