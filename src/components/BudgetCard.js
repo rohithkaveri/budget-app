@@ -1,9 +1,10 @@
 import { Card, ProgressBar, Stack, Button } from "react-bootstrap"
 import {currencyFormatter} from '../utils'
 import './BudgetCard.css'
-//import 'bootstrap/dist/css/bootstrap.min.css';
+/*import 'bootstrap/dist/css/bootstrap.min.css';*/
 
-export default function BudgetCard({name, amount, max, gray}) {
+export default function BudgetCard({name, amount, max, gray, hideButtons, 
+onAddExpenseClick, onViewExpenseClick}) {
   const bgClassNames = []
   if(amount > max)
   {
@@ -18,22 +19,28 @@ export default function BudgetCard({name, amount, max, gray}) {
         <Card.Body>
           <Card.Title className='BudgetTitle'>
               <div className="me-3">{name}</div>
+              {/*only display max value if we have one*/}
               <div className="d-flex align-items-baseline">
                 {currencyFormatter.format(amount)} 
-                <span className="text-muted fs-6 ms-1">/ {currencyFormatter.format(max)} 
-                </span>
+                
+                {max && (<span className="text-muted fs-6 ms-1">/ 
+                {currencyFormatter.format(max)} 
+                </span>)}
               </div>
           </Card.Title>
-          <ProgressBar 
+          {/*only display progress bar if we have a max*/}
+          {max && (<ProgressBar 
           variant={getProgressBarVariant(amount, max)} 
           min={0} 
           max={max}
           now={amount}>
-          </ProgressBar>
-          <Stack direction="horizontal" gap="2" className="mt-4">
-            <Button variant="outline-primary" className="ms-auto">Add Expense</Button>
-            <Button variant="outline-secondary">View Expenses</Button>
-          </Stack>
+          </ProgressBar>)}
+          {!hideButtons && (<Stack direction="horizontal" gap="2" className="mt-4">
+            <Button variant="outline-primary" className="ms-auto"
+            onClick={onAddExpenseClick}>Add Expense</Button>
+            <Button variant="outline-secondary"
+            onClick={onViewExpenseClick}>View Expenses</Button>
+          </Stack>)}
         </Card.Body>
       </Card>
   );
